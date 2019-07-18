@@ -35,11 +35,27 @@ dev_dependencies:
 # The following section is specific to Flutter.
 flutter:
 
-  # The following line ensures that the Material Icons font is
-  # included with your application, so that you can use the icons in
-  # the material Icons class.
+
   uses-material-design: true
 
+
+
+  assets:
+    - assets/fonts/
+    - assets/images/
+
+  fonts:
+    - family: Pacifico
+      fonts:
+        - asset: assets/fonts/Pacifico-Regular.ttf
+
+    - family: Barlow
+      fonts:
+        - asset: assets/fonts/Barlow-Regular.ttf
+
+    - family: Beach Resort
+      fonts:
+        - asset: assets/fonts/Beach-Resort.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #  - images/a_dot_burr.jpeg
