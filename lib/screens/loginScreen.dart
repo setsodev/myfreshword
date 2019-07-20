@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myfreshword/screens/homeScreen.dart';
 import 'package:myfreshword/screens/signupScreen.dart';
 
 import './widgets/custom_shape.dart';
@@ -217,8 +218,17 @@ class _SignInScreenState extends State<SignInScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
         print("Routing to your account");
-        Scaffold.of(context)
-            .showSnackBar(SnackBar(content: Text('Login Successful')));
+        Scaffold.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Login Successful'),
+          ),
+        );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => MyHomeScreen(),
+          ),
+        );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

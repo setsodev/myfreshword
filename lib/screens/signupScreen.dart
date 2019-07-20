@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:myfreshword/constants/constants.dart';
+import 'package:myfreshword/screens/homeScreen.dart';
 
 import './widgets/custom_shape.dart';
 import './widgets/customappbar.dart';
@@ -230,6 +231,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
         print("Routing to your account");
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (BuildContext context) => MyHomeScreen(),
+          ),
+        );
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),
