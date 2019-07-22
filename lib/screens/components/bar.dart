@@ -10,9 +10,12 @@ class BarView extends StatelessWidget {
   Widget build(BuildContext context) {
     return new Row(
       children: <Widget>[
-        new Container(
-          child: new Icon(icon, size: 25.0, color: Colors.red.shade400),
-          margin: const EdgeInsets.only(right: 26.0),
+        new IconButton(
+          icon: new Icon(icon, size: 25.0, color: Colors.red.shade400),
+          onPressed: () {
+            print('noticifications');
+          },
+//          margin: const EdgeInsets.only(right: 26.0),
         ),
         new Expanded(
           child: new TextField(
