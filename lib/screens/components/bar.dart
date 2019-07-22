@@ -41,7 +41,7 @@ class BarView extends StatelessWidget {
               print('now playing');
             },
             child: new Icon(
-              Icons.headset,
+              Icons.equalizer,
               size: 25.0,
               color: Colors.red.shade400,
             ),
