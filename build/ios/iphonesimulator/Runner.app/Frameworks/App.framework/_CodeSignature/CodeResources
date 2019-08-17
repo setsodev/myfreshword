@@ -18,7 +18,7 @@
 		</data>
 		<key>flutter_assets/LICENSE</key>
 		<data>
-		4w2qfSyIgejVlZiKIu5mHa8tnx4=
+		l5kZidILbx+nwMWdgMzLimiIef8=
 		</data>
 		<key>flutter_assets/assets/fonts/Barlow-Regular.ttf</key>
 		<data>
@@ -114,11 +114,11 @@
 		</data>
 		<key>flutter_assets/isolate_snapshot_data</key>
 		<data>
-		/vgMP+81yPYSAV9NOluDbeQtIwE=
+		1kZTJEmnB5tLOvK76MC+YOkrUHE=
 		</data>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<data>
-		SL03Lom4Oi1el2J6YYtr88pZOHw=
+		KBIUR8jgzsrK7vMklooLB1J1Ja4=
 		</data>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
 		<data>
@@ -126,7 +126,7 @@
 		</data>
 		<key>flutter_assets/vm_snapshot_data</key>
 		<data>
-		22d/uqG3PzWIwrCXdsQCn2qCw/I=
+		Dna2BxcG22HN2x7XHM+DJIIqXcM=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -157,11 +157,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			4w2qfSyIgejVlZiKIu5mHa8tnx4=
+			l5kZidILbx+nwMWdgMzLimiIef8=
 			</data>
 			<key>hash2</key>
 			<data>
-			TeHGEh36ePLV0nWRK2D8ST9q7GO467olsUJNpaxO5Lo=
+			SW9FO8u2CM/PUdk9wN63uXk4Ht1TmUQb6QZeY7YbZJg=
 			</data>
 		</dict>
 		<key>flutter_assets/assets/fonts/Barlow-Regular.ttf</key>
@@ -421,22 +421,22 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			/vgMP+81yPYSAV9NOluDbeQtIwE=
+			1kZTJEmnB5tLOvK76MC+YOkrUHE=
 			</data>
 			<key>hash2</key>
 			<data>
-			tsbedxrP4Y18+kIXGFiS4qUyAc92HdVD2cXH2YYpxaY=
+			CJhflXpti398hm8yS/gDK1n5KVzSnOtnxxF9E/Hd80E=
 			</data>
 		</dict>
 		<key>flutter_assets/kernel_blob.bin</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			SL03Lom4Oi1el2J6YYtr88pZOHw=
+			KBIUR8jgzsrK7vMklooLB1J1Ja4=
 			</data>
 			<key>hash2</key>
 			<data>
-			rCbEJ1/5dj3OoH48b15peKo0SJ+SqXDxyTqUZ4X3SR4=
+			TRPDIsbQ/DclFp13PsHkCRVV7oOwXGOnxKY6rskvPKg=
 			</data>
 		</dict>
 		<key>flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf</key>
@@ -454,11 +454,11 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			22d/uqG3PzWIwrCXdsQCn2qCw/I=
+			Dna2BxcG22HN2x7XHM+DJIIqXcM=
 			</data>
 			<key>hash2</key>
 			<data>
-			mUkJfAurliGemNJtTyy/4+Ip7/jZM9wdJNZ3ONsYDko=
+			wI3Xcb7E9SgBNZDNDgFiAuCXAJ9CgxxPHlb33vmxSSU=
 			</data>
 		</dict>
 	</dict>
