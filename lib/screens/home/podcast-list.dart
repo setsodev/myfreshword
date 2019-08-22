@@ -24,14 +24,15 @@ class PodcastLists extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(children: <Widget>[
+    
       Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: podcastListOne
             .map((Podcast podcast) => Item(podcast.imgUrl, podcast.description))
             .toList(),
       ),
       Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: podcastListTwo
               .map((Podcast podcast) =>
                   Item(podcast.imgUrl, podcast.description))

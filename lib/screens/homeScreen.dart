@@ -6,6 +6,7 @@ import 'package:myfreshword/screens/profile/index.dart';
 
 import 'components/bar.dart';
 import 'home/index.dart';
+import 'loginscreen.dart';
 
 class MyHomeScreen extends StatelessWidget {
   @override
@@ -74,7 +75,7 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.white,
       ),
       body: new SingleChildScrollView(
-        child: _currentPage,
+        child:  _currentPage,
       ),
       bottomNavigationBar: BottomNavigationBar(
         // Bottom navigation

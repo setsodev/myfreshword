@@ -1,4 +1,0 @@
-#Sat Jul 20 00:58:38 GMT 2019
-base.0=/Users/root1/Desktop/flutter.dev/myfreshword/build/app/intermediates/transforms/dexMerger/debug/0
-path.0=classes.dex
-renamed.0=classes.dex
