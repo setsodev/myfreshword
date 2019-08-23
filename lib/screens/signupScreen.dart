@@ -6,6 +6,10 @@ import './widgets/custom_shape.dart';
 import './widgets/customappbar.dart';
 import './widgets/responsive_ui.dart';
 import './widgets/textformfield.dart';
+import '../data/user_data.dart';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -19,6 +23,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController mobileController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  Future<SignUpUser> fetchPost(name, email, phone, username, password) async {
+    final response =
+        await http.post('http://api.myfreshword.com/app/signup', body: {
+      "name": name,
+      "email": email,
+      "mobile": phone,
+      "username": username,
+      "password": password,
+    });
+
+    if (response.statusCode == 200) {
+      // If server returns an OK response, parse the JSON.
+      return SignUpUser.fromJson(json.decode(response.body));
+    } else {
+      // If that response was not OK, throw an error.
+      throw Exception('Failed to load post');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -162,38 +191,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget firstNameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
+      textEditingController: nameController,
       icon: Icons.person,
       hint: "First Name",
+      obscureText: false,
     );
   }
 
   Widget lastNameTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
+      textEditingController: nameController,
       icon: Icons.person,
       hint: "Last Name",
+      obscureText: false,
     );
   }
 
   Widget emailTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.emailAddress,
+      textEditingController: emailController,
       icon: Icons.email,
       hint: "Email ID",
+      obscureText: false,
     );
   }
 
   Widget phoneTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.number,
+      textEditingController: mobileController,
       icon: Icons.phone,
       hint: "Mobile Number",
+      obscureText: false,
     );
   }
 
   Widget passwordTextFormField() {
     return CustomTextField(
       keyboardType: TextInputType.text,
+      textEditingController: passwordController,
       obscureText: true,
       icon: Icons.lock,
       hint: "Password",

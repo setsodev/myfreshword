@@ -112,7 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
           });
     } else {
       Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text("Wrong User or Password")));
+          .showSnackBar(SnackBar(content: Text("Incorrect Username or Password")));
     }
   }
 
@@ -251,19 +251,21 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget emailTextFormField() {
     return CustomTextField(
-      // keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
       hint: "Username",
+      obscureText: false,
+      
     );
   }
 
   Widget passwordTextFormField() {
     return CustomTextField(
-      // keyboardType: TextInputType.emailAddress,
+      keyboardType: TextInputType.emailAddress,
       textEditingController: passwordController,
       icon: Icons.lock,
-      // obscureText: true,
+      obscureText: true,
       hint: "Password",
     );
   }

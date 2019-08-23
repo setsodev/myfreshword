@@ -18,7 +18,7 @@ class CustomTextField extends StatelessWidget {
     this.textEditingController,
     this.keyboardType,
     this.icon,
-    this.obscureText = false,
+    this.obscureText
   });
 
   @override
@@ -34,6 +34,7 @@ class CustomTextField extends StatelessWidget {
         controller: textEditingController,
         keyboardType: keyboardType,
         cursorColor: Colors.red[500],
+        obscureText: obscureText,
         decoration: InputDecoration(
           prefixIcon: Icon(icon, color: Colors.red[500], size: 20),
           hintText: hint,
@@ -41,6 +42,7 @@ class CustomTextField extends StatelessWidget {
               borderRadius: BorderRadius.circular(30.0),
               borderSide: BorderSide.none),
         ),
+        
       ),
     );
   }
