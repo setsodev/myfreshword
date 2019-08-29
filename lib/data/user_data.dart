@@ -17,13 +17,13 @@ class User {
   }
 }
 
-class SignUpUser {
+class NewUser {
   int status;
   String message;
 
-  SignUpUser({this.status, this.message});
+  NewUser({this.status, this.message});
 
-  factory SignUpUser.fromJson(Map<String, dynamic> json) {
-    return SignUpUser(status: json['status'], message: json['message']);
+  factory NewUser.fromJson(Map<String, dynamic> json) {
+    return NewUser(status: json['status'], message: json['message']);
   }
 }

@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:myfreshword/constants/constants.dart';
 import 'package:myfreshword/screens/homeScreen.dart';
+import 'package:flutter/foundation.dart';
 
 import './widgets/custom_shape.dart';
 import './widgets/customappbar.dart';
 import './widgets/responsive_ui.dart';
 import './widgets/textformfield.dart';
 import '../data/user_data.dart';
+import '../data/church_data.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'dart:io';
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -23,30 +27,129 @@ class _SignUpScreenState extends State<SignUpScreen> {
   double _pixelRatio;
   bool _large;
   bool _medium;
+  String _dropdownValue;
+  ContentType contentType;
 
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController mobileController = TextEditingController();
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  GlobalKey<FormState> _key = GlobalKey();
 
-  Future<SignUpUser> fetchPost(name, email, phone, username, password) async {
-    final response =
-        await http.post('http://api.myfreshword.com/app/signup', body: {
-      "name": name,
-      "email": email,
-      "mobile": phone,
+  bool _isLoading = false;
+
+//http call to register
+  Future<NewUser> _signupUser(String username, String mobile, String email,
+      String password, String churchid) async {
+    var body = json.encode({
       "username": username,
+      "mobile": mobile,
+      "email": email,
       "password": password,
+      "church_id": churchid,
     });
+    final response =
+        await http.post('https://api.myfreshword.com/app/sign_up', body: body);
 
     if (response.statusCode == 200) {
+      print(json.decode(response.body));
+      return NewUser.fromJson(json.decode(response.body));
+    } else {
+      throw Exception('Error registering user');
+    }
+  }
+
+  void signUp() async {
+    //formvalidation
+    if (_key.currentState.validate()) {
+      // setState(() => _isLoading = true);
+      var res = await _signupUser(
+          usernameController.text,
+          mobileController.text,
+          emailController.text,
+          passwordController.text,
+          _dropdownValue);
+      // setState(() => _isLoading = false);
+      // NewUser user = NewUser.fromJson(res);
+      if (res.status == 202) {
+        return showDialog(
+            context: context,
+            barrierDismissible: false, //user must tap a button
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Success'),
+                content: Text('Registration Successful'),
+                actions: <Widget>[
+                  FlatButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute<Null>(
+                          builder: (BuildContext context) {
+                        return new MyHomeScreen(
+                            // user: user,
+                            );
+                      }));
+                    },
+                  )
+                ],
+              );
+            });
+      } else {
+        return showDialog(
+            context: context,
+            barrierDismissible: true, //user must tap a button
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Error'),
+                content: Text('Registration Unsuccessful please try again'),
+                // actions: <Widget>[
+                //   FlatButton(
+                //     child: Text('Ok'),
+                //     onPressed: () {
+                //       Navigator.of(context).push(MaterialPageRoute<Null>(
+                //           builder: (BuildContext context) {
+                //         return new MyHomeScreen(
+                //             // user: user,
+                //             );
+                //       }));
+                //     },
+                //   )
+                // ],
+              );
+            });
+      }
+    }
+  }
+
+//http call to get all churches.
+  Future<List<Church>> fetchChurchList(http.Client client) async {
+    final response =
+        await http.get('https://api.myfreshword.com/app/church_list');
+
+    if (response.statusCode == 200) {
+      // print(response.body);
       // If server returns an OK response, parse the JSON.
-      return SignUpUser.fromJson(json.decode(response.body));
+      // return parseChurch(response.body);
+      // Use the compute function to run parseChurch in a separate isolate. in other to prevent  app freezing
+      return compute(parseChurch, response.body);
     } else {
       // If that response was not OK, throw an error.
       throw Exception('Failed to load post');
     }
+  }
+
+  // A function that converts a response body into a List<Church>.
+  static List<Church> parseChurch(String responseBody) {
+    final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
+
+    return parsed.map<Church>((json) => Church.fromJson(json)).toList();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    this.fetchChurchList(http.Client());
   }
 
   @override
@@ -171,11 +274,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
       margin: EdgeInsets.only(
           left: _width / 12.0, right: _width / 12.0, top: _height / 20.0),
       child: Form(
+        key: _key,
         child: Column(
           children: <Widget>[
-            firstNameTextFormField(),
+            userNameTextFormField(),
             SizedBox(height: _height / 60.0),
-            lastNameTextFormField(),
+            // churchListDropDown(),
+
+            //fetching the data and displaying it in churchListDropDown(),
+            FutureBuilder<List<Church>>(
+              future: fetchChurchList(http.Client()),
+              builder: (context, snapshot) {
+                if (snapshot.hasError) print(snapshot.error);
+                return snapshot.hasData
+                    ? churchListDropDown(snapshot.data)
+                    : Center(child: CircularProgressIndicator());
+
+                // //if (snapchat.hasData){
+                //   return churchListDropDown(snapshot.data);
+                //   }else{ errorChurchlistDropdown(snapshot.error)}
+              },
+            ),
             SizedBox(height: _height / 60.0),
             emailTextFormField(),
             SizedBox(height: _height / 60.0),
@@ -190,6 +309,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget firstNameTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "required";
+        }
+        return null;
+      },
       keyboardType: TextInputType.text,
       textEditingController: nameController,
       icon: Icons.person,
@@ -200,6 +325,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget lastNameTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "required";
+        }
+        return null;
+      },
       keyboardType: TextInputType.text,
       textEditingController: nameController,
       icon: Icons.person,
@@ -208,8 +339,79 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  Widget userNameTextFormField() {
+    return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "required";
+        }
+        return null;
+      },
+      keyboardType: TextInputType.text,
+      textEditingController: usernameController,
+      icon: Icons.person,
+      hint: "Username",
+      obscureText: false,
+    );
+  }
+
+  Widget churchListDropDown(churchlist) {
+    final List<Church> churchData = churchlist;
+    return CustomDropdownButton(
+      item: churchData.map((item) {
+        return new DropdownMenuItem(
+            child: new Text(
+              item.name,
+              style: TextStyle(fontSize: 14.0),
+            ),
+            value: item.id);
+      }).toList(),
+      isExpanded: true,
+      dropdownValue: _dropdownValue,
+      onchanged: (String newValue) {
+        setState(() {
+          _dropdownValue = newValue;
+          // print(_dropdownValue);
+        });
+      },
+      // icon:Icons.home,
+      hint: Text("Select Church"),
+    );
+  }
+
+  //create a default dropdown should incase their is an error while fetching churchlist.
+  // Widget errorChurchlistDropdown() {
+
+  //   return CustomDropdownButton(
+  //     item: churchData.map((item) {
+  //       return new DropdownMenuItem(
+  //           child: new Text(
+  //             item.name,
+  //             style: TextStyle(fontSize: 14.0),
+  //           ),
+  //           value: item.id);
+  //     }).toList(),
+  //     isExpanded: true,
+  //     dropdownValue: _dropdownValue,
+  //     onchanged: (String newValue) {
+  //       setState(() {
+  //         _dropdownValue = newValue;
+  //         // print(_dropdownValue);
+  //       });
+  //     },
+  //     // icon:Icons.home,
+  //     hint: Text("Select Church"),
+  //   );
+  // }
+
   Widget emailTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "required";
+        }
+        return null;
+      },
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
@@ -220,6 +422,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget phoneTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "required";
+        }
+        return null;
+      },
       keyboardType: TextInputType.number,
       textEditingController: mobileController,
       icon: Icons.phone,
@@ -230,6 +438,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Widget passwordTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return "required";
+        }
+        return null;
+      },
       keyboardType: TextInputType.text,
       textEditingController: passwordController,
       obscureText: true,
@@ -268,13 +482,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       elevation: 0,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
       onPressed: () {
-        print("Routing to your account");
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (BuildContext context) => MyHomeScreen(),
-          ),
-        );
+        signUp();
       },
       textColor: Colors.white,
       padding: EdgeInsets.all(0.0),

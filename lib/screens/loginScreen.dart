@@ -82,37 +82,45 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void login() async {
-    // setState(() => _isLoading = true);
-    var res = await _loginUser(emailController.text, passwordController.text);
-    // setState(() => _isLoading = false);
-    User user = User.fromJson(res);
-    if (user.id != null) {
-      return showDialog(
-          context: context,
-          barrierDismissible: false, //user must tap a button
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Success'),
-              content:
-                  Text('Login Successful'),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Ok'),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute<Null>(
-                        builder: (BuildContext context) {
-                      return new MyHomeScreen(
-                          // user: user,
-                          );
-                    }));
-                  },
-                )
-              ],
-            );
-          });
-    } else {
-      Scaffold.of(context)
-          .showSnackBar(SnackBar(content: Text("Incorrect Username or Password")));
+    //formvalidation
+    if (_key.currentState.validate()) {
+// setState(() => _isLoading = true);
+      var res = await _loginUser(emailController.text, passwordController.text);
+      // setState(() => _isLoading = false);
+      User user = User.fromJson(res);
+      if (user.id != null) {
+        Navigator.of(context)
+            .push(MaterialPageRoute<Null>(builder: (BuildContext context) {
+          return new MyHomeScreen(
+              //user:user
+              );
+        }));
+        // return showDialog(
+        //     context: context,
+        //     barrierDismissible: false, //user must tap a button
+        //     builder: (BuildContext context) {
+        //       return AlertDialog(
+        //         title: Text('Success'),
+        //         content: Text('Login Successful'),
+        //         actions: <Widget>[
+        //           FlatButton(
+        //             child: Text('Ok'),
+        //             onPressed: () {
+        //               Navigator.of(context).push(MaterialPageRoute<Null>(
+        //                   builder: (BuildContext context) {
+        //                 return new MyHomeScreen(
+        //                     // user: user,
+        //                     );
+        //               }));
+        //             },
+        //           )
+        //         ],
+        //       );
+        //     });
+      } else {
+        Scaffold.of(context).showSnackBar(
+            SnackBar(content: Text("Incorrect Username or Password")));
+      }
     }
   }
 
@@ -251,17 +259,28 @@ class _SignInScreenState extends State<SignInScreen> {
 
   Widget emailTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'please enter correct username';
+        }
+        return null;
+      },
       keyboardType: TextInputType.emailAddress,
       textEditingController: emailController,
       icon: Icons.email,
       hint: "Username",
       obscureText: false,
-      
     );
   }
 
   Widget passwordTextFormField() {
     return CustomTextField(
+      validator: (value) {
+        if (value.isEmpty) {
+          return 'please enter correct Password';
+        }
+        return null;
+      },
       keyboardType: TextInputType.emailAddress,
       textEditingController: passwordController,
       icon: Icons.lock,
